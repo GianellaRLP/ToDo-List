@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css"> 
+</head>
+<body>
+
+  
+    <div class="main_container">
+        <h1>Tasks</h1>
+        <form id="new-task" class="form-container">
+            <div id="task-container-input">
+                <input id="task" autocomplete="off" placeholder="New Task" type="text">
+                <button type="submit" class="add_button" id="add_button">Enviar</button>
+            </div>
+        </form>                
+        <ul id="tasks">
+        </ul>
+        <div id="container_complete">
+            <button class="complete_button" id="complete-all">Complete All</button>
+        </div>
+    </div>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#new-task').onsubmit = (event) => {
+          event.preventDefault();
+          
+          const li = document.createElement('li');
+          
+          const cb = document.createElement("input");
+          cb.setAttribute("type", "checkbox");
+          cb.onchange = function() {
+            if (this.checked) {
+              this.nextElementSibling.classList.add("completed");
+            } else {
+              this.nextElementSibling.classList.remove("completed");
+            }
+          };
+
+          const taskText = document.createElement('span');
+          taskText.appendChild(document.createTextNode(document.querySelector('#task').value));
+          
+          const deleteButton = document.createElement("button");
+          deleteButton.innerHTML = "X";
+          deleteButton.className = 'delete_button';
+          deleteButton.onclick = function() {
+            this.parentElement.remove();
+          };
+
+          li.appendChild(cb);
+          li.appendChild(taskText);
+          li.appendChild(deleteButton);
+
+          document.querySelector('#tasks').appendChild(li);
+
+          document.querySelector('#task').value = '';
+        };
+
+        document.querySelector('#complete-all').onclick = () => {
+          const checkboxes = document.querySelectorAll('#tasks input[type="checkbox"]');
+          checkboxes.forEach(cb => {
+            if (!cb.checked) {
+              cb.checked = true;
+              cb.nextElementSibling.classList.add("completed");
+            }
+          });
+        };
+      });
+    </script>
+</body>
+</html>
